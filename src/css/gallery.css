@@ -8,6 +8,7 @@
 .gallery {
   margin: 0 auto;
   max-width: 1200px;
+  margin-bottom: 32px;
 }
 .gallery-list {
   display: flex;
@@ -18,7 +19,11 @@
 .gallery-item {
   border: 1px solid #808080;
 }
-
+.gallery-image {
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
 .main-review-container {
   display: flex;
   justify-content: center;

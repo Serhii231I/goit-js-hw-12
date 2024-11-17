@@ -24,6 +24,10 @@ const list = document.querySelector(".gallery-list")
 form.addEventListener("submit", onSubmit);
 
 loadMore.addEventListener("click", onLoadMore);
+let simpleLightBox = new SimpleLightbox(`.gallery a`, {
+                captionsData: 'alt',
+                captionDelay: 250,
+            });
 
 
  function onSubmit(event) {
@@ -59,12 +63,9 @@ loadMore.addEventListener("click", onLoadMore);
             else {
                 
                 list.insertAdjacentHTML("beforeend", renderMarkup(data.hits))
+                simpleLightBox.refresh();
             };
-            const simpleLightBox = new SimpleLightbox(`.gallery a`, {
-                captionsData: 'alt',
-                captionDelay: 250,
-            });
-            simpleLightBox.refresh();
+            
             if(page * per_page < data.totalHits) {
             loadMore.classList.replace("load-more-hidden", "load-more");
             };
@@ -94,8 +95,9 @@ loader.textContent = ""
    
     try {
         const data = await serverRequest(`${BASE_URL}?${params}`);
-        console.log(data);
-        list.insertAdjacentHTML("beforeend", renderMarkup(data.hits))
+        list.insertAdjacentHTML("beforeend", renderMarkup(data.hits));
+                simpleLightBox.refresh();
+
         if (page * per_page >= data.totalHits) {
             iziToast.warning({
                     title: 'Caution',
@@ -112,7 +114,10 @@ loader.textContent = ""
         })
     }
     catch (error) {
-        alert(error.message)
+        iziToast.error({
+    title: 'Error',
+    message: 'Illegal operation',
+});
         }
         finally {
         loadMore.disabled = false;
